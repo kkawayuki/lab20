@@ -1,3 +1,5 @@
+// COMSC-210 | lab 20 | Kent Kawashima
+// IDE used: Visual Studio Code
 #include <iostream>
 #include <iomanip>
 #include <cstdlib> //for rand
@@ -40,9 +42,20 @@ public:
     }
 
     // getters
-    int getLegs() { return legs; }
+    int getLegs() const { return legs; } 
 
-    double getAveragePrices()
+    /************************************************
+     * Function: calculates the average value that a
+     * chair object contains, does not have an associated
+     * variable for the value to avoid "stale data",
+     * instead calculating and returning the average
+     * whenever needed.
+     * 
+     * Parameters: NONE
+     * 
+     * Return: calculated average value (double)
+     ************************************************/
+    double getAveragePrices() const 
     {
         double sum = 0;
         for (int i = 0; i < SIZE; i++)
@@ -50,7 +63,14 @@ public:
         return sum / SIZE;
     }
 
-    // print function for each price in array
+    /************************************************
+     * Function: prints all relevant fields of a 
+     * specific Chair object. Uses public getter
+     * functions to avoid risking data manipulation
+     * 
+     * Parameters: NONE
+     * Return: NONE
+     ************************************************/
     void print()
     {
         cout << "CHAIR DATA - legs: " << legs << endl;
@@ -64,14 +84,16 @@ public:
     }
 };
 
+/************************************************
+ * Function: Main
+ ************************************************/
 int main()
 {
     srand(time(0)); // seed random variable
     cout << fixed << setprecision(2);
 
-    // creating pointer to first chair object
+    // manual creation of chair object using setters
     cout << "Printing data for manual object-------------------\n";
-
     Chair *chairPtr = new Chair;
     chairPtr->setLegs(4);
     chairPtr->setPrices(121.21, 232.32, 414.14);
@@ -79,26 +101,25 @@ int main()
 
     // creating dynamic chair object with partial help from constructor (gen random leg amt)
     cout << "Printing data for dynamic object------------------\n";
-
     Chair *livingChair = new Chair();
     livingChair->setPrices(525.25, 434.34, 252.52);
     livingChair->print();
     delete livingChair;
     livingChair = nullptr;
 
-    // creating dynamic array of chair objects
-    cout << "Printing data for dynamic array of Chairs----------\n";
-
-    Chair *collection = new Chair[SIZE];
-    for (int i = 0; i < SIZE; i++) // note that default constructor is implcitly called for each field, generating random leg/price data.
-        collection[i].print();
-
-    // creating a chair using the parameter constructor
+    // creating a chair both parameters in constructor
     cout << "Printing data for user-passed value object-------\n";
-
     double arr1[3] = {192.29, 203.26, 991.00}; // creation of array
     Chair *test3 = new Chair(4, arr1);         // passing array to parameter constructor
     test3->print();
 
+
+    // creating dynamic array of chair objects
+    cout << "Printing data for dynamic array of Chairs----------\n";
+    Chair *collection = new Chair[SIZE];
+    for (int i = 0; i < SIZE; i++) // note that default constructor is implcitly called for each field, generating random leg/price data.
+        collection[i].print();
+
+    
     return 0;
 }
